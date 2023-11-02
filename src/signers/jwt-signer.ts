@@ -4,9 +4,9 @@ import { sha256 } from "@cosmjs/crypto";
 import { AAccountData, AASigner } from "../interfaces/AASigner";
 import { AAAlgo } from "../interfaces/smartAccount";
 import { getAALastAuthenticatorId } from "./utils";
-import stytch from "stytch";
+import { Client } from "stytch";
 
-export const stytchClient = new stytch.Client({
+export const stytchClient = new Client({
   project_id: "project-test-185e9a9f-8bab-42f2-a924-953a59e8ff94",
   secret: "secret-test-u03nhY2N0YF81K19vvSzeTFjvfLV5NCIqGc=",
   env: "https://test.stytch.com/v1",
