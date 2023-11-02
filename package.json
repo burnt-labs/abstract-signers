@@ -1,0 +1,37 @@
+{
+  "name": "@xion/abstract-signers",
+  "version": "1.0.0",
+  "description": "This package contains utilities to interact with the xion chain abstract account module e.g. creating abstract accounts, signing messages and broadcasting to the chain. These libraries are an extension of the Stargate library for interacting with Cosmos chains.",
+  "types": "dist/declarations/index.d.ts",
+  "module": "dist/index.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "yarn --package typescript tsc",
+    "start": "node dist/index.js",
+    "dev": "concurrently \"yarn tsc --watch\" \"nodemon -q dist/app.js\"",
+    "lint": "eslint --ignore-path .gitignore --ext .ts .",
+    "lint:fix": "eslint --ignore-path .gitignore --ext .ts . --fix",
+    "format": "prettier --ignore-path .gitignore --write \"**/*.{ts,json,md}\""
+  },
+  "author": "Kehinde Faleye <scar@burnt.com>",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/client": "^3.8.6",
+    "@cosmjs/cosmwasm-stargate": "^0.31.1",
+    "@cosmjs/stargate": "^0.31.0",
+    "bech32": "^2.0.0",
+    "graphql": "^16.8.0",
+    "stytch": "^9.0.6"
+  },
+  "devDependencies": {
+    "@types/node": "18.11.9",
+    "eslint": "8.28.0",
+    "eslint-config-next": "13.0.5",
+    "prettier": "^3.0.2",
+    "typescript": "4.9.3"
+  }
+}
