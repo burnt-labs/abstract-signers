@@ -1,8 +1,8 @@
 import { DirectSignResponse } from "@cosmjs/proto-signing";
 import { SignDoc } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import { sha256 } from "@cosmjs/crypto";
-import { AAccountData, AASigner } from "@app/interfaces/AASigner";
-import { AAAlgo } from "@app/interfaces/smartAccount";
+import { AAccountData, AASigner } from "../interfaces/AASigner";
+import { AAAlgo } from "../interfaces/smartAccount";
 import { getAALastAuthenticatorId } from "./utils";
 import stytch from "stytch";
 

@@ -1,6 +1,6 @@
 import { DirectSignResponse, OfflineDirectSigner } from "@cosmjs/proto-signing";
 import { SignDoc } from "cosmjs-types/cosmos/tx/v1beta1/tx";
-import { AAccountData, AASigner } from "@app/interfaces/AASigner";
+import { AAccountData, AASigner } from "../interfaces/AASigner";
 
 import { getAAccounts } from "./utils";
 

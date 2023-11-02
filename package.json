@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "description": "This package contains utilities to interact with the xion chain abstract account module e.g. creating abstract accounts, signing messages and broadcasting to the chain. These libraries are an extension of the Stargate library for interacting with Cosmos chains.",
   "types": "dist/declarations/index.d.ts",
-  "module": "dist/index.js",
   "main": "dist/index.js",
   "files": [
-    "dist"
+    "dist/"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
