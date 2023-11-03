@@ -7,9 +7,9 @@ import { getAALastAuthenticatorId } from "./utils";
 import { Client } from "stytch";
 
 export const stytchClient = new Client({
-  project_id: "project-test-185e9a9f-8bab-42f2-a924-953a59e8ff94",
-  secret: "secret-test-u03nhY2N0YF81K19vvSzeTFjvfLV5NCIqGc=",
-  env: "https://test.stytch.com/v1",
+  project_id: process.env.NEXT_PUBLIC_STYTCH_PROJECT_ID ?? "",
+  secret: process.env.NEXT_PUBLIC_STYTCH_SECRET ?? "",
+  env: process.env.NEXT_PUBLIC_STYTCH_API_URL,
 });
 
 export class AbstractAccountJWTSigner extends AASigner {
@@ -69,8 +69,40 @@ export class AbstractAccountJWTSigner extends AASigner {
           type: "",
           value: new Uint8Array(),
         },
-        signature: authResp.session_jwt,
+        signature: Buffer.from(authResp.session_jwt, "utf-8").toString(
+          "base64"
+        ),
       },
+    };
+  }
+
+  /**
+   * This method allows for signing arbitrary messages
+   * It does not compose a SignDoc but simply sets the transaction_hash
+   * property of the session claims property to the hash of the passed msg
+   * @param signerAddress
+   * @param message Arbitrary message to be signed
+   * @returns
+   */
+  async signDirectArb(message: string): Promise<{ signature: string }> {
+    if (this.sessionToken === undefined) {
+      throw new Error("stytch session token is undefined");
+    }
+    const hashSignBytes = sha256(Buffer.from(message, "utf-8"));
+    const hashedMessage = Buffer.from(hashSignBytes).toString("base64");
+
+    const authResp = await stytchClient.sessions.authenticate({
+      session_token: this.sessionToken,
+      session_duration_minutes: 60 * 24 * 30,
+      session_custom_claims: {
+        transaction_hash: hashedMessage,
+      },
+    });
+    if (authResp.status_code !== 200) {
+      throw new Error("Failed to authenticate with stytch");
+    }
+    return {
+      signature: Buffer.from(authResp.session_jwt, "utf-8").toString("base64"),
     };
   }
 }
