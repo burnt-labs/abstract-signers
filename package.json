@@ -1,6 +1,6 @@
 {
   "name": "@burnt-labs/abstract-signers",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.1-alpha.1",
   "description": "This package contains utilities to interact with the xion chain abstract account module e.g. creating abstract accounts, signing messages and broadcasting to the chain. These libraries are an extension of the Stargate library for interacting with Cosmos chains.",
   "types": "dist/declarations/index.d.ts",
   "main": "dist/index.js",
