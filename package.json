@@ -9,12 +9,13 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf dist && yarn --package typescript tsc",
+    "build": "rm -rf dist && tsc",
     "start": "node dist/index.js",
     "dev": "concurrently \"yarn tsc --watch\" \"nodemon -q dist/app.js\"",
     "lint": "eslint --ignore-path .gitignore --ext .ts .",
     "lint:fix": "eslint --ignore-path .gitignore --ext .ts . --fix",
-    "format": "prettier --ignore-path .gitignore --write \"**/*.{ts,json,md}\""
+    "format": "prettier --ignore-path .gitignore --write \"**/*.{ts,json,md}\"",
+    "prepublishOnly": "yarn build"
   },
   "author": "Kehinde Faleye <scar@burnt.com>",
   "license": "ISC",
