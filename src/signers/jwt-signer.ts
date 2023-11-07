@@ -4,13 +4,6 @@ import { sha256 } from "@cosmjs/crypto";
 import { AAccountData, AASigner } from "../interfaces/AASigner";
 import { AAAlgo } from "../interfaces/smartAccount";
 import { getAALastAuthenticatorId } from "./utils";
-import { Client } from "stytch";
-
-export const stytchClient = new Client({
-  project_id: process.env.NEXT_PUBLIC_STYTCH_PROJECT_ID ?? "",
-  secret: process.env.NEXT_PUBLIC_STYTCH_SECRET ?? "",
-  env: process.env.NEXT_PUBLIC_STYTCH_API_URL,
-});
 
 export class AbstractAccountJWTSigner extends AASigner {
   // requires a session token already created
@@ -52,16 +45,26 @@ export class AbstractAccountJWTSigner extends AASigner {
     const hashSignBytes = sha256(signBytes);
     const message = Buffer.from(hashSignBytes).toString("base64");
 
-    const authResp = await stytchClient.sessions.authenticate({
-      session_token: this.sessionToken,
-      session_duration_minutes: 60 * 24 * 30,
-      session_custom_claims: {
-        transaction_hash: message,
+    const authResponse = await fetch('https://burnt-abstraxion-api.onrender.com/api/v1/sessions/authenticate', {
+      method: "POST",
+      headers: {
+        "content-type" : "application/json"
       },
-    });
-    if (authResp.status_code !== 200) {
-      throw new Error("Failed to authenticate with stytch");
+      body: JSON.stringify({
+        session_token: this.sessionToken,
+        session_duration_minutes: 60 * 24 * 30,
+        session_custom_claims: {
+          transaction_hash: message,
+        },
+      })
+    })
+
+    if(!authResponse.ok){
+      throw new Error("Failed to authenticate with stytch")
     }
+
+    const authResponseData = await authResponse.json();
+
     return {
       signed: signDoc,
       signature: {
@@ -69,7 +72,7 @@ export class AbstractAccountJWTSigner extends AASigner {
           type: "",
           value: new Uint8Array(),
         },
-        signature: Buffer.from(authResp.session_jwt, "utf-8").toString(
+        signature: Buffer.from(authResponseData.session_jwt, "utf-8").toString(
           "base64"
         ),
       },
@@ -91,18 +94,28 @@ export class AbstractAccountJWTSigner extends AASigner {
     const hashSignBytes = sha256(Buffer.from(message, "utf-8"));
     const hashedMessage = Buffer.from(hashSignBytes).toString("base64");
 
-    const authResp = await stytchClient.sessions.authenticate({
-      session_token: this.sessionToken,
-      session_duration_minutes: 60 * 24 * 30,
-      session_custom_claims: {
-        transaction_hash: hashedMessage,
+    const authResponse = await fetch('https://burnt-abstraxion-api.onrender.com/api/v1/sessions/authenticate', {
+      method: "POST",
+      headers: {
+        "content-type" : "application/json"
       },
-    });
-    if (authResp.status_code !== 200) {
-      throw new Error("Failed to authenticate with stytch");
+      body: JSON.stringify({
+        session_token: this.sessionToken,
+        session_duration_minutes: 60 * 24 * 30,
+        session_custom_claims: {
+          transaction_hash: hashedMessage,
+        },
+      })
+    })
+
+    if(!authResponse.ok){
+      throw new Error("Failed to authenticate with stytch")
     }
+
+    const authResponseData = await authResponse.json();
+
     return {
-      signature: Buffer.from(authResp.session_jwt, "utf-8").toString("base64"),
+      signature: Buffer.from(authResponseData.session_jwt, "utf-8").toString("base64"),
     };
   }
 }
