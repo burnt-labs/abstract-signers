@@ -10,6 +10,7 @@ export const AllSmartWalletQuery = gql`
       }
     ) {
       nodes {
+        id
         authenticators {
           nodes {
             ...SmartAccountFragment
@@ -40,6 +41,7 @@ export const AllSmartWalletQueryByAccountId = gql`
   query ($id: String!) {
     smartAccounts(filter: { id: { equalTo: $id } }) {
       nodes {
+        id
         authenticators {
           nodes {
             ...SmartAccountFragment
@@ -60,6 +62,7 @@ export const AllSmartWalletQueryByIdAndAuthenticator = gql`
       }
     ) {
       nodes {
+        id
         authenticators {
           nodes {
             ...SmartAccountFragment
@@ -80,6 +83,7 @@ export const AllSmartWalletQueryByIdAndType = gql`
       }
     ) {
       nodes {
+        id
         authenticators {
           nodes {
             ...SmartAccountFragment
@@ -105,6 +109,7 @@ export const AllSmartWalletQueryByIdAndTypeAndAuthenticator = gql`
       }
     ) {
       nodes {
+        id
         authenticators {
           nodes {
             ...SmartAccountFragment

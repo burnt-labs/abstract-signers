@@ -5,7 +5,7 @@ export const SMART_ACCOUNT_FRAGMENT = gql`
     id
     type
     authenticator
-    authenticatorId
+    authenticatorIndex
     version
   }
 `;
