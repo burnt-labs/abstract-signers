@@ -25,7 +25,7 @@ import { OTPsAuthenticateResponse } from "stytch";
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 export const apolloClient = new ApolloClient({
-  uri: process.env.NEXT_PUBLIC_INDEXER_GRAPHQL_ENDPOINT,
+  uri: "https://api.subquery.network/sq/burnt-labs/xion-indexer",
   cache: new InMemoryCache(),
   assumeImmutableResults: true,
 });
