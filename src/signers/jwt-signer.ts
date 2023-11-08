@@ -72,7 +72,7 @@ export class AbstractAccountJWTSigner extends AASigner {
           type: "",
           value: new Uint8Array(),
         },
-        signature: Buffer.from(authResponseData.session_jwt, "utf-8").toString(
+        signature: Buffer.from(authResponseData.data.session_jwt, "utf-8").toString(
           "base64"
         ),
       },
@@ -115,7 +115,7 @@ export class AbstractAccountJWTSigner extends AASigner {
     const authResponseData = await authResponse.json();
 
     return {
-      signature: Buffer.from(authResponseData.session_jwt, "utf-8").toString("base64"),
+      signature: Buffer.from(authResponseData.data.session_jwt, "utf-8").toString("base64"),
     };
   }
 }
