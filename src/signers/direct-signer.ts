@@ -31,7 +31,6 @@ export class AADirectSigner extends AASigner {
   }
 
   async getAccounts(): Promise<readonly AAccountData[]> {
-    console.log(this.abstractAccount);
     const accounts = await this.signer.getAccounts();
     if (accounts.length === 0) {
       return [];

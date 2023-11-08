@@ -206,8 +206,6 @@ export class AAClient extends SigningCosmWasmClient {
           ])
         ).toString("base64");
       });
-    console.log(signature);
-    console.log(Buffer.from(signature, "base64").length);
     return TxRaw.fromPartial({
       bodyBytes,
       authInfoBytes,
