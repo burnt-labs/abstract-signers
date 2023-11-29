@@ -8,12 +8,10 @@ import { getAALastAuthenticatorId } from "./utils";
 export class AbstractAccountJWTSigner extends AASigner {
   // requires a session token already created
   sessionToken: string | undefined;
-  apiUrl: string;
   indexerUrl: string;
-  constructor(abstractAccount: string, sessionToken?: string, apiUrl?: string, indexerUrl?: string) {
+  constructor(abstractAccount: string, sessionToken?: string, indexerUrl?: string) {
     super(abstractAccount);
     this.sessionToken = sessionToken;
-    this.apiUrl = apiUrl || "https://burnt-abstraxion-api.onrender.com"
     this.indexerUrl = indexerUrl || "https://api.subquery.network/sq/burnt-labs/xion-indexer"
   }
 
@@ -49,7 +47,7 @@ export class AbstractAccountJWTSigner extends AASigner {
     const hashSignBytes = sha256(signBytes);
     const message = Buffer.from(hashSignBytes).toString("base64");
 
-    const authResponse = await fetch(`${this.apiUrl}/api/v1/sessions/authenticate`, {
+    const authResponse = await fetch("https://aa.xion-testnet-1.burnt.com/api/v1/sessions/authenticate", {
       method: "POST",
       headers: {
         "content-type" : "application/json"
@@ -98,7 +96,7 @@ export class AbstractAccountJWTSigner extends AASigner {
     const hashSignBytes = sha256(Buffer.from(message, "utf-8"));
     const hashedMessage = Buffer.from(hashSignBytes).toString("base64");
 
-    const authResponse = await fetch(`${this.apiUrl}/api/v1/sessions/authenticate`, {
+    const authResponse = await fetch("https://aa.xion-testnet-1.burnt.com/api/v1/sessions/authenticate", {
       method: "POST",
       headers: {
         "content-type" : "application/json"
