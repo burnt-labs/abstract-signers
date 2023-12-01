@@ -1,15 +1,18 @@
 {
   "name": "@burnt-labs/abstract-signers",
-  "version": "0.0.1-alpha.8",
+  "version": "0.0.1-alpha.9",
   "description": "This package contains utilities to interact with the xion chain abstract account module e.g. creating abstract accounts, signing messages and broadcasting to the chain. These libraries are an extension of the Stargate library for interacting with Cosmos chains.",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "types": "dist/declarations/index.d.ts",
-  "main": "dist/index.js",
   "files": [
     "dist/"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf dist && tsc",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build": "rm -rf dist && yarn build:cjs && yarn build:esm",
     "start": "node dist/index.js",
     "dev": "concurrently \"yarn tsc --watch\" \"nodemon -q dist/app.js\"",
     "lint": "eslint --ignore-path .gitignore --ext .ts .",
@@ -20,9 +23,9 @@
   "author": "Kehinde Faleye <scar@burnt.com>",
   "license": "ISC",
   "dependencies": {
+    "@apollo/client": "^3.8.6",
     "@cosmjs/cosmwasm-stargate": "^0.31.1",
     "@cosmjs/stargate": "^0.31.0",
-    "@apollo/client": "^3.8.6",
     "bech32": "^2.0.0",
     "graphql": "^16.8.0",
     "react": "^18.0.0",
