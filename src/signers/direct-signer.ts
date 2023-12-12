@@ -18,10 +18,12 @@ import { getAAccounts } from "./utils";
  */
 export class AADirectSigner extends AASigner {
   signer: OfflineDirectSigner;
+  indexerUrl: string;
 
-  constructor(initializedSigner: OfflineDirectSigner, abstractAccount: string) {
+  constructor(initializedSigner: OfflineDirectSigner, abstractAccount: string, indexerUrl?: string) {
     super(abstractAccount);
     this.signer = initializedSigner;
+    this.indexerUrl = indexerUrl || "https://api.subquery.network/sq/burnt-labs/xion-indexer"
   }
   async signDirect(
     signerAddress: string,
@@ -45,6 +47,6 @@ export class AADirectSigner extends AASigner {
         };
       });
     }
-    return await getAAccounts(accounts, this.abstractAccount);
+    return await getAAccounts(accounts, this.abstractAccount, this.indexerUrl);
   }
 }

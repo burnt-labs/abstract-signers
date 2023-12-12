@@ -8,9 +8,11 @@ import { getAALastAuthenticatorId } from "./utils";
 export class AbstractAccountJWTSigner extends AASigner {
   // requires a session token already created
   sessionToken: string | undefined;
-  constructor(abstractAccount: string, sessionToken?: string) {
+  indexerUrl: string;
+  constructor(abstractAccount: string, sessionToken?: string, indexerUrl?: string) {
     super(abstractAccount);
     this.sessionToken = sessionToken;
+    this.indexerUrl = indexerUrl || "https://api.subquery.network/sq/burnt-labs/xion-indexer"
   }
 
   async getAccounts(): Promise<readonly AAccountData[]> {
@@ -27,7 +29,7 @@ export class AbstractAccountJWTSigner extends AASigner {
         address: this.abstractAccount,
         algo: "secp256k1", // we don't really care about this
         pubkey: new Uint8Array(),
-        authenticatorId: await getAALastAuthenticatorId(this.abstractAccount),
+        authenticatorId: await getAALastAuthenticatorId(this.abstractAccount, this.indexerUrl),
         accountAddress: this.abstractAccount,
         aaalgo: AAAlgo.JWT,
       },
@@ -36,7 +38,7 @@ export class AbstractAccountJWTSigner extends AASigner {
 
   async signDirect(
     signerAddress: string, // this is the email of the user
-    signDoc: SignDoc
+    signDoc: SignDoc,
   ): Promise<DirectSignResponse> {
     if (this.sessionToken === undefined) {
       throw new Error("stytch session token is undefined");
@@ -45,7 +47,7 @@ export class AbstractAccountJWTSigner extends AASigner {
     const hashSignBytes = sha256(signBytes);
     const message = Buffer.from(hashSignBytes).toString("base64");
 
-    const authResponse = await fetch('https://burnt-abstraxion-api.onrender.com/api/v1/sessions/authenticate', {
+    const authResponse = await fetch("https://aa.xion-testnet-1.burnt.com/api/v1/sessions/authenticate", {
       method: "POST",
       headers: {
         "content-type" : "application/json"
@@ -94,7 +96,7 @@ export class AbstractAccountJWTSigner extends AASigner {
     const hashSignBytes = sha256(Buffer.from(message, "utf-8"));
     const hashedMessage = Buffer.from(hashSignBytes).toString("base64");
 
-    const authResponse = await fetch('https://burnt-abstraxion-api.onrender.com/api/v1/sessions/authenticate', {
+    const authResponse = await fetch("https://aa.xion-testnet-1.burnt.com/api/v1/sessions/authenticate", {
       method: "POST",
       headers: {
         "content-type" : "application/json"
